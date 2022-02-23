@@ -24,9 +24,17 @@ get '/signup' do
 end
 
 post '/signup' do
+    img_url = ''
+    if params[:file]
+       img = params[:file] #Fileクラス
+       tempfile = img[:tempfile]
+       upload = Cloudinary::Uploader.upload(tempfile.path)
+       img_url = upload['url']
+    end
+    
     @user = User.create(name: params[:name], password: params[:password],
                         password_confirmation: params[:password_confirmation],
-                        image: params[:icon])
+                        image: img_url)
     if @user.persisted?
         session[:user] = @user.id
     end
@@ -41,7 +49,7 @@ post '/login' do
    redirect '/'
 end
 
-post '/logout' do
+get '/logout' do
    session[:user] = nil
-   redirect '/'
+   erb :index
 end
