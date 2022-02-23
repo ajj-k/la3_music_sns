@@ -26,7 +26,7 @@ end
 post '/signup' do
     img_url = ''
     if params[:file]
-       img = params[:file] #Fileクラス
+       img = params[:file]
        tempfile = img[:tempfile]
        upload = Cloudinary::Uploader.upload(tempfile.path)
        img_url = upload['url']
