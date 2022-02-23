@@ -5,13 +5,15 @@
 		<title>MUSIC SNS</title>
 		<link rel="stylesheet" href="/assets/css/index.css">
 		<link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<body>
 		<nav class="center-horizontal">
 			<a href="/">MUSIC SNS!!!</a>
 			<% unless session[:user] %>
 			<a href="/signup">Sign up</a>
 			<% else %>
-			<a href="/home"><img src="" alt="user_image" width="40" height="40"></a>
+			<p><%= User.find(session[:user]).name %></p>
+			<a href="/home"><img src="<%= User.find(session[:user]).image %>" alt="user_image" width="40" height="40"></a>
 			<a href="/search">Search</a>
 			<a href="/logout">Sign out</a>
 			<% end %>
