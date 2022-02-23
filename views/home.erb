@@ -1,13 +1,14 @@
 <section class="center-vertical">
-	<h1>〇〇の投稿</h1>
+	<h1><%= User.find(session[:user]).name %>の投稿</h1>
 	<p>投稿がありません</p>
 </section>
 
 <section class="center-vertical">
-	<h1>〇〇のイイねした投稿</h1>
+	<h1><%= User.find(session[:user]).name %>のイイねした投稿</h1>
 	<p>イイねがありません</p>
 </section>
 
+<!--
 <section class="center-vertical">
 	<h1>〇〇のフォロー</h1>
 	<a href="#">フォロー解除</a><br>
@@ -16,3 +17,4 @@
 <section class="center-vertical">
 	<h1>〇〇のフォロワー</h1>
 </section>
+-->

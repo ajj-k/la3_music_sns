@@ -2,6 +2,9 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
 require './models'
+require 'open-uri'
+require 'json'
+require 'net/http'
 require 'dotenv/load'
 
 enable :sessions
@@ -23,6 +26,26 @@ get '/signup' do
     erb :sign_up
 end
 
+get '/home' do
+   erb :home 
+end
+
+get '/search' do
+    uri = URI("https://itunes.apple.com/search?")
+    uri.query = URI.encode_www_form({
+        term: "くうになる",
+        media: "music",
+        limit: 30
+    })
+    puts uri
+    res = Net::HTTP.get_response(uri)
+    json = JSON.parse(res.body)
+    puts json
+    @songs_results = json["results"]
+    #@songs = json["artistName"]["collectionName"]["trackName"]["artworkUrl100"]["previewUrl"]
+    erb :search
+end
+
 post '/signup' do
     img_url = ''
     if params[:file]
@@ -32,7 +55,7 @@ post '/signup' do
        img_url = upload['url']
     end
     
-    @user = User.create(name: params[:name], password: params[:password],
+    @user = User.create(name: params[:user], password: params[:password],
                         password_confirmation: params[:password_confirmation],
                         image: img_url)
     if @user.persisted?
