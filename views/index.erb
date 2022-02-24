@@ -13,7 +13,28 @@
 
 <section class="center-vertical">
 	<h1>最新の投稿</h1>
-
+	
+	<% Post.all.limit(10).each do |post| %>
+	<div class="post center-vertical">
+		<img src="<%= post.image %>" width="125" height="125">
+		<p>アーティスト: <%= post.artist %></p>
+		<p>アルバム: <%= post.album %></p>
+		<p>曲名: <%= post.song %></p>
+		<p><a href="<%= post.sample %>">サンプル</a></p>
+		<p>コメント: <%= post.comment %></p>
+		<p>投稿者: <%= User.find(post.user_id).name %></p>
+		<!--
+		<a href="#">フォローする</a>
+		<a href="#">フォロー解除</a>
+		-->
+		<p>いいねしたユーザー</p>
+		<div class="user-box">
+			<img src="" alt="user_image" width="40" height="40">
+		</div>
+		<a href="#">いいねする</a>
+	</div>
+	<% end %>
+	
 	<div class="post center-vertical">
 		<img src="" width="125" height="125">
 		<p>アーティスト: 〇〇</p>
