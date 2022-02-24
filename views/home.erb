@@ -12,16 +12,7 @@
 			<p>いいねしたユーザー</p>
 			<p><a href="/post/<%= post.id %>/del">削除</a></p>
 			<p><a href="/post/<%= post.id %>/edit">編集</a></p>
-					<form action="/post" method="post">
-						<input type="hidden" name="icon" value="<%= post["artworkUrl100"]%>">
-						<input type="hidden" name="artist" value="<%= post["artistName"] %>">
-						<input type="hidden" name="album" value="<%= post["collectionName"] %>">
-						<input type="hidden" name="song" value="<%= post["trackName"] %>">
-						<input type="hidden" name="sample" value="<%= post["previewUrl"] %>">
-						<input type="text" name="comment" placeholder="コメント">
-						<input type="submit" value="投稿">
-					</form>
-				</div>
+		</div>
 	<% end %>
 </section>
 
