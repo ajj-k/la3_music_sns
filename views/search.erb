@@ -7,7 +7,20 @@
 	<h2>検索結果</h2>
 
 		<div class="center-horizontal">
-
+			<% @song_results.each do |song| %>
+				<div class="post center-vertical">
+					<img src=<%= song["artworkUrl100"]%> width="125" height="125">
+					<p>アーティスト： <%= song["artistName"] %></p>
+					<p>アルバム： <%= song["collectionName"] %></p>
+					<p>曲名： <%= song["trackName"] %></p>
+					<p><a href="<%= song["previewUrl"] %>">サンプル</a></p>
+					<form>
+						<input type="" name="" placeholder="コメント">
+						<input type="submit" value="投稿">
+					</form>
+				</div>
+			<% end %>
+			<!--	
 				<div class="post center-vertical">
 					<img src="" width="125" height="125">
 					<p>アーティスト: 〇〇</p>
@@ -24,7 +37,7 @@
 						<input type="submit" value="投稿">
 					</form>
 				</div>
-
+-->
 		</div>
 
 	<%# TODO: 検索結果によって分岐 %>

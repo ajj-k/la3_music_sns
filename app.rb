@@ -33,16 +33,14 @@ end
 get '/search' do
     uri = URI("https://itunes.apple.com/search?")
     uri.query = URI.encode_www_form({
-        term: "くうになる",
+        term: params["search"],
         media: "music",
+        country: "JP",
         limit: 30
     })
-    puts uri
     res = Net::HTTP.get_response(uri)
     json = JSON.parse(res.body)
-    puts json
-    @songs_results = json["results"]
-    #@songs = json["artistName"]["collectionName"]["trackName"]["artworkUrl100"]["previewUrl"]
+    @song_results = json["results"]
     erb :search
 end
 
