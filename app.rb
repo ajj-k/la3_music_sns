@@ -110,3 +110,23 @@ get '/post/:id/del' do
    post.destroy
    erb :home
 end
+
+get '/post/:id/like' do
+    post = Post.find(params[:id])
+    #like = Post.find(params[:id])
+    current_user.likes.create(
+        user_id: session[:user],
+        post_id: params[:id]
+        )
+    puts "liked"
+    redirect "/home"
+end
+
+get '/post/:id/del_like' do
+   post = current_user.likes.find_by(post_id: params[:id])
+   puts post.id
+   post.destroy
+   post.save
+   puts "delete"
+   redirect "/home"
+end

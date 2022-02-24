@@ -19,6 +19,23 @@
 <section class="center-vertical">
 	<h1><%= User.find(session[:user]).name %>のイイねした投稿</h1>
 	<p>イイねがありません</p>
+	<% User.find(session[:user]).liked_posts.each do |liked_post| %>
+		<div class="post center-vertical">
+			<img src=<%= liked_post.image %> width="125" height="125">
+			<p>アーティスト： <%= liked_post.artist %></p>
+			<p>アルバム： <%= liked_post.album %></p>
+			<p>曲名： <%= liked_post.song %></p>
+			<p><a href="<%= liked_post.sample %>">サンプル</a></p>
+			<p>コメント： <%= liked_post.comment%></p>
+			<p>投稿者： <%= User.find(liked_post.user_id).name %></p>
+			<p>いいねしたユーザー</p>
+			<% liked_post.liked_users.each do |liked_user| %>
+			<div class="user-box">
+				<img src="<%= liked_user.image %>" alt="user_image" width="40" height="40">
+			</div>
+			<% end %>
+		</div>
+	<% end %>
 </section>
 
 <!--
