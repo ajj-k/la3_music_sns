@@ -18,6 +18,12 @@ before do
    end
 end
 
+helpers do
+    def current_user
+        User.find_by(id: session[:user])
+    end
+end
+
 get '/' do
     erb :index
 end
@@ -63,7 +69,7 @@ post '/signup' do
 end
 
 post '/login' do
-    user = User.find_by(name: params[:name])
+    user = User.find_by(name: params[:user])
    if user && user.authenticate(params[:password])
       session[:user] = user.id 
    end
@@ -73,4 +79,16 @@ end
 get '/logout' do
    session[:user] = nil
    erb :index
+end
+
+post '/post' do
+    current_user.posts.create(
+        image: params[:icon],
+        artist: params[:artist],
+        album: params[:album],
+        song: params[:song],
+        sample: params[:sample],
+        comment: params[:comment]
+        )
+    redirect '/home'
 end
