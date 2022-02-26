@@ -6,6 +6,27 @@ require 'open-uri'
 require 'json'
 require 'net/http'
 require 'dotenv/load'
+require 'oauth'
+require 'twitter'
+
+consumer_key = '5HfH6eCoWnzFjoUJ28xlQdToC'
+consumer_secret = 'afzFM7hW4tcELX4efV4lMs455pPkNxFRtKzCKuuwQ0CxikLrvX'
+access_token = '1497258146309771264-FGlEemTwPE7qbIPyTXGGglV2LRsfOr'
+access_token_secret = 'iBQUFeL3ZQj0ICOZTDBWOpuiuky89BIs26KwYZYia42JK'
+TWITTER_CALLBACK = 'http://localhost:9292/redirect'
+
+consumer = OAuth::Consumer.new(
+    consumer_key,
+    consumer_secret,
+    site: '/https://api.twitter.com/',
+        :schema => :header,
+        :method => :post,
+        :request_token_path => '/oauth/request_token',
+        :access_token_path => '/oauth/access_token',
+        :authorize_path => '/oauth/authorize'
+    )
+endpoint = OAuth::AccessToken.new(consumer,
+access_token,access_token_secret)
 
 enable :sessions
 
@@ -16,6 +37,13 @@ before do
    config.api_key    = ENV['CLOUDINARY_API_KEY']
    config.api_secret = ENV['CLOUDINARY_API_SECRET']
    end
+   @twitter = OAuth::AccessToken.new(consumer,session[:access_token],session[:section_token])
+end
+
+def base_url
+   default_port = (request.scheme == "http") ? 80 : 443
+   port = (request.port == default_port) ? "" : ":#{request.port.to_s}"
+   return "#{request.scheme}://#{request.host}#{port}"
 end
 
 helpers do
@@ -129,4 +157,28 @@ get '/post/:id/del_like' do
    post.save
    puts "delete"
    redirect "/home"
+end
+
+get '/twitter' do
+    callback_url = "#{base_url}/access_token"
+    request_token = consumer.get_request_token(:oauth_callback => callback_url)
+    session[:request_token] = request_token.token
+    session[:request_token_secret] = request_token.secret
+    redirect request_token.authorize_url
+    response = endpoint.get('https://api.twitter.com/1.1/statuses/user_timeline.json?count=5')
+    puts response.body
+    erb :index
+end
+
+get '/redirect' do
+   oauth_client = consumer
+   request_token = OAuth::RequestToken.new(oauth_client, session[:request_token], session[:request_token_secret])
+   access_token = oauth_client.get_access_token(request_token, oauth_verifier => params[:oauth_verifier])
+   twitter_client = Twitter::Rest::Client.new do |config|
+       config.consumer_key = consumer_key
+       config.consumer_secret = consumer_secret
+       config.access_token = access_token.token
+       config.access_token_secret = access_token.secret
+   end
+   puts "Logged in #{twtter_client.user.name}"
 end

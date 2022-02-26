@@ -1,12 +1,17 @@
 <section class="first-view center-vertical">
 	<h1>MUSIC SNS!!!</h1>
 	<% unless session[:user] %>
+	<!-- standard
 	<div class="login_button">
 		<form action="/login" method="post">
 			<input type="text" name="user" placeholder="ユーザー名"></br>
 			<input type="password" name="password" required placeholder="パスワード"></br>
 			<input type="submit" value="Sing in">
 		</form>
+	</div>
+	-->
+	<div class="login_button">
+		<a href="/twitter" ><img src="/assets/img/sign-in-with-twitter.png"></a>
 	</div>
 	<% end %>
 </section>
