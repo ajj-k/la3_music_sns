@@ -18,7 +18,9 @@
 
 <section class="center-vertical">
 	<h1><%= User.find(session[:user]).name %>のイイねした投稿</h1>
+	<% if User.find(session[:user]).liked_posts.count == 0 %>
 	<p>イイねがありません</p>
+	<% end %>
 	<% User.find(session[:user]).liked_posts.each do |liked_post| %>
 		<div class="post center-vertical">
 			<img src=<%= liked_post.image %> width="125" height="125">

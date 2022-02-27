@@ -17,8 +17,8 @@ consumer = OAuth::Consumer.new(
     consumer_key,
     consumer_secret,
     site: 'https://api.twitter.com/',
-        :schema => :header,
-        :method => :post,
+    #    :schema => :header,
+    #    :method => :post,
     )
 
 
@@ -41,6 +41,7 @@ helpers do
 end
 
 get '/' do
+    puts Post.count
     erb :index
 end
 
@@ -168,6 +169,9 @@ get '/twitter' do
     request_token = consumer.get_request_token(:oauth_callback => callback_url)
     session[:request_token] = request_token.token
     session[:request_token_secret] = request_token.secret
+    puts session[:request_token]
+    puts session[:request_token_secret]
+    puts request_token.authorize_url
     redirect request_token.authorize_url
     #response = endpoint.get('https://api.twitter.com/1.1/statuses/user_timeline.json?count=5')
     #puts response.body

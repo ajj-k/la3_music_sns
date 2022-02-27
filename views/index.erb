@@ -18,7 +18,7 @@
 <section class="center-vertical">
 	<h1>最新の投稿</h1>
 	
-	<% Post.all.limit(30).each do |post| %>
+	<% Post.all.each do |post| %>
 	<div class="post center-vertical">
 		<img src="<%= post.image %>" width="125" height="125">
 		<p>アーティスト: <%= post.artist %></p>
@@ -45,14 +45,16 @@
 			<a href="javascript:form_1.submit()">いいねする</a>	
 		</form>
 		-->
+		<% if session[:user] %>
 		<% if !post.liked_users.find_by(id: session[:user]) %>
 		<a href="/post/<%= post.id %>/like">いいねする</a>
 		<% else %>
 		<a href="/post/<%= post.id %>/del_like">いいね解除</a>
 		<% end %>
+		<% end %>
 	</div>
 	<% end %>
-	
+	<!--
 	<div class="post center-vertical">
 		<img src="" width="125" height="125">
 		<p>アーティスト: 〇〇</p>
@@ -69,7 +71,10 @@
 		</div>
 		<a href="#">いいねする</a>
 	</div>
-
+	-->
+	
 	<%# TODO: ここで分岐 %>
+	<% if Post.count == 0 %>
 	<p>投稿がありません</p>
+	<% end %>
 </section>
