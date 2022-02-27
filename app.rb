@@ -21,7 +21,6 @@ consumer = OAuth::Consumer.new(
         :method => :post,
     )
 
-
 enable :sessions
 
 before do
@@ -144,6 +143,22 @@ get '/post/:id/del_like' do
    post.destroy
    post.save
    puts "delete"
+   redirect "/home"
+end
+
+get '/follow/:id' do
+   follow = current_user.friends.create(
+       user_id: current_user.id,
+       follow_id: params[:id]
+       )
+    puts "followed"
+    redirect "/home"
+end
+
+get '/follow/:id/del' do
+   follow = current_user.friends.find_by(follow_id: params[:id])
+   follow.destroy
+   follow.save
    redirect "/home"
 end
 

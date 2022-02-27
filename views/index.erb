@@ -27,21 +27,19 @@
 		<p><a href="<%= post.sample %>">サンプル</a></p>
 		<p>コメント: <%= post.comment %></p>
 		<p>投稿者: <%= User.find(post.user_id).name %></p>
-		<!--
-		<a href="#">フォローする</a>
+		<% if session[:user] %>
+		<% unless current_user.friends.find_by(follow_id: post.user_id) %>
+		<a href="/follow/<%= post.user_id %>">フォローする</a>
+		<% else%>
 		<a href="#">フォロー解除</a>
-		-->
+		<% end %>
+		<% end %>
 		<p>いいねしたユーザー</p>
 		<% post.liked_users.each do |liked_user| %>
 		<div class="user-box">
 			<img src="<%= liked_user.image %>" alt="user_image" width="40" height="40">
 		</div>
 		<% end%>
-		<!--
-		<form name="form_1" id="form_1" action="/post/<%= post.id%>/like">
-			<a href="javascript:form_1.submit()">いいねする</a>	
-		</form>
-		-->
 		<% if !post.liked_users.find_by(id: session[:user]) %>
 		<a href="/post/<%= post.id %>/like">いいねする</a>
 		<% else %>
@@ -49,7 +47,7 @@
 		<% end %>
 	</div>
 	<% end %>
-	
+	<!--
 	<div class="post center-vertical">
 		<img src="" width="125" height="125">
 		<p>アーティスト: 〇〇</p>
@@ -66,6 +64,7 @@
 		</div>
 		<a href="#">いいねする</a>
 	</div>
+	-->
 
 	<%# TODO: ここで分岐 %>
 	<p>投稿がありません</p>
