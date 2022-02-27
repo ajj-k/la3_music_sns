@@ -38,13 +38,20 @@
 	<% end %>
 </section>
 
-<!--
 <section class="center-vertical">
-	<h1>〇〇のフォロー</h1>
-	<a href="#">フォロー解除</a><br>
+	<h1><%= current_user.name %>のフォロー</h1>
+	<% current_user.friends.each do |friend| %>
+	<p><%= User.find(friend.follow_id).name %></p>
+	<a href="follow/<%= friend.follow_id %>/del">フォロー解除</a><br>
+	<% end %>
 </section>
 
 <section class="center-vertical">
-	<h1>〇〇のフォロワー</h1>
+	<h1><%= current_user.name %>のフォロワー</h1>
+	<% unless Friend.find_by(follow_id: session[:user]).nil? %>
+	<% Friend.where(follow_id: session[:user]).each do |friend| %>
+	<p><%= User.find(friend.user_id).name %></p>
+	<% end %>
+	<% end %>
 </section>
--->
+

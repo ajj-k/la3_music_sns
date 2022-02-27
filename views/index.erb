@@ -27,10 +27,13 @@
 		<p><a href="<%= post.sample %>">サンプル</a></p>
 		<p>コメント: <%= post.comment %></p>
 		<p>投稿者: <%= User.find(post.user_id).name %></p>
-		<!--
-		<a href="#">フォローする</a>
-		<a href="#">フォロー解除</a>
-		-->
+		<% if session[:user] %>
+		<% unless current_user.friends.find_by(follow_id: post.user_id ) %>
+		<a href="/follow/<%= post.user_id %>">フォローする</a>
+		<% else %>
+		<a href="/follow/<%= post.user_id %>/del">フォロー解除</a>
+		<% end %>
+		<% end %>
 		<p>いいねしたユーザー</p>
 		<% post.liked_users.each do |liked_user| %>
 		<div class="user-box">

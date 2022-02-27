@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     has_secure_password
     has_many :posts
     has_many :likes
+    has_many :friends
     has_many :liked_posts, through: :likes, source: :post, dependent: :destroy
 end
 
@@ -19,4 +20,8 @@ end
 class Like < ActiveRecord::Base
    belongs_to :user
    belongs_to :post
+end
+
+class Friend < ActiveRecord::Base
+   belongs_to :user 
 end

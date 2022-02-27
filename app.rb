@@ -147,6 +147,21 @@ get '/post/:id/del_like' do
    redirect "/home"
 end
 
+get '/follow/:id' do
+    current_user.friends.create(
+        user_id: session[:user],
+        follow_id: params[:id]
+        )
+    redirect '/home'
+end
+
+get '/follow/:id/del' do
+    follow = current_user.friends.find_by(follow_id: params[:id])
+    follow.destroy
+    follow.save
+    redirect '/home'
+end
+
 get '/twitter' do
     callback_url = "https://342c1446a83b4ebe8d2cbcdbc3ff8e9f.vfs.cloud9.ap-northeast-1.amazonaws.com/redirect"
     puts callback_url
